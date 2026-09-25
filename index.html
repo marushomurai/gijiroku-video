@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>議事録を動画にするスキルの入れ方</title>
+<style>
+  :root { --blue: #1d4ed8; --tint: #dbeafe; --ink: #0b1220; --muted: #64748b; --bg: #f4f6f9; --green: #00ab0f; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Hiragino Sans", "Hiragino Kaku Gothic Pro", "Noto Sans CJK JP", "Yu Gothic", system-ui, sans-serif; line-height: 1.8; }
+  header { background: var(--blue); color: #fff; padding: 20px 16px; }
+  header h1 { margin: 0 auto; max-width: 720px; font-size: 24px; }
+  header p { margin: 4px auto 0; max-width: 720px; font-size: 15px; }
+  main { max-width: 720px; margin: 0 auto; padding: 20px 16px 48px; display: grid; gap: 20px; }
+  section { background: #fff; border: 2px solid var(--ink); padding: 20px; }
+  h2 { margin: 0 0 12px; font-size: 22px; }
+  .who { display: inline-block; background: var(--tint); padding: 2px 10px; font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+  ol { margin: 0; padding-left: 1.4em; display: grid; gap: 14px; font-size: 17px; }
+  b { color: var(--blue); }
+  .btn { display: inline-block; margin-top: 8px; background: var(--blue); color: #fff; font: 700 18px inherit; font-family: inherit; border: 0; padding: 14px 22px; text-decoration: none; cursor: pointer; }
+  .btn:focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
+  .done { display: none; margin-left: 10px; color: var(--green); font-weight: 700; }
+  code { display: block; margin-top: 8px; padding: 10px; background: var(--bg); font-size: 13px; word-break: break-all; user-select: all; }
+  .note { font-size: 14px; color: var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <h1>議事録を動画にするスキル</h1>
+  <p>議事録を貼って「議事録を動画にして」と言うだけで、動く・しゃべる議事録ができます。</p>
+</header>
+<main>
+  <section>
+    <span class="who">Codex を使っている人</span>
+    <h2>Codex に入れる（1分）</h2>
+    <ol>
+      <li>下の青いボタンを押す（文字がコピーされます）
+        <br><button class="btn" id="copy" type="button">コピーする</button><span class="done" id="done">コピーしました</span>
+        <code id="cmd">$skill-installer install https://github.com/marushomurai/gijiroku-video/tree/main/gijiroku-video</code>
+      </li>
+      <li>Codex を開いて、いつも質問を書くところに<b>貼り付けて送る</b>（Mac は ⌘＋V）</li>
+      <li>「入れました」と返事が来たら、<b>Codex を一度閉じて開き直す</b></li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="who">Claude を使っている人</span>
+    <h2>Claude に入れる（2分）</h2>
+    <ol>
+      <li>下の青いボタンを押す（ファイルがダウンロードされます。<b>開かずにそのまま</b>でOK）
+        <br><a class="btn" href="https://github.com/marushomurai/gijiroku-video/releases/latest/download/gijiroku-video.zip">ダウンロードする</a>
+      </li>
+      <li>このボタンを押して、Claude の「スキル」の画面を開く
+        <br><a class="btn" href="https://claude.ai/customize/skills">スキルの画面を開く</a>
+        <br><span class="note">Claude アプリの中なら「カスタマイズ（Customize）」→「スキル（Skills）」と同じ画面です</span></li>
+      <li><b>「＋」</b>→<b>「スキルを作成（Create skill）」</b>→<b>「スキルをアップロード（Upload a skill）」</b>を押す</li>
+      <li>さっきダウンロードした <b>gijiroku-video.zip</b> を選ぶ（「ダウンロード」フォルダに入っています）</li>
+      <li>一覧に <b>gijiroku-video</b> が出て、スイッチが<b>オン</b>になっていれば完了</li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="who">入れたあと</span>
+    <h2>使い方</h2>
+    <ol>
+      <li>議事録やメモを貼って<b>「議事録を動画にして」</b>と送る</li>
+      <li>できたページの<b>「▶ 読み上げつきで再生」</b>を押す</li>
+    </ol>
+    <p class="note">うまく入らない時は、この画面を見せて村井さんに聞いてください。社外秘の内容が入った動画は社内だけで見せてください。</p>
+  </section>
+</main>
+<script>
+  document.getElementById('copy').onclick = async () => {
+    const text = document.getElementById('cmd').textContent;
+    try { await navigator.clipboard.writeText(text); document.getElementById('done').style.display = 'inline'; }
+    catch { const r = document.createRange(); r.selectNodeContents(document.getElementById('cmd')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+  };
+</script>
+</body>
+</html>
